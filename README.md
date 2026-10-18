@@ -2,11 +2,41 @@
 
 An Expo app with a shared backend. Two real people match, the local picks or suggests an activity, the newcomer approves it, and both use polls to agree on availability, a time, and the final plan. Photon delivers native iMessage polls. Gemini understands free-text availability, preferences, and activity suggestions.
 
+## What you can do
+
+- Match a newcomer with a local and move from an activity suggestion to an agreed plan.
+- Approve activities and vote on availability/time through app cards or iMessage polls.
+- Describe preferences or availability in natural language with Gemini-assisted extraction.
+- Reconfirm a new plan version when either person changes the activity or schedule.
+- Rehearse the planning flow in console mode without sending real messages.
+
+## Tech stack
+
+| Layer | Technologies |
+| --- | --- |
+| Mobile / web interface | Expo SDK 57, React Native 0.86, React 19, TypeScript |
+| Client persistence | AsyncStorage |
+| Backend | Node.js, TypeScript via tsx, local HTTP API |
+| Planning | Deterministic activity, overlap and confirmation logic in `server/engine.ts` and `server/time.ts` |
+| AI extraction | Gemini structured-output requests (`server/gemini.ts`) |
+| Messaging | Photon Spectrum (`spectrum-ts`), native iMessage polls and explicit text fallback |
+| Backend persistence | Local JSON store with serialized mutations and delivery receipts |
+| Checks | TypeScript, ESLint, Node test runner with mocked integrations |
+
+The app talks to the shared backend; the backend owns planning state and calls Gemini/Photon. AI extracts intent, while code calculates time overlap and validates both participants' confirmations. No API keys are bundled into the Expo client.
+
 ## Start here
 
 Use this **one folder** for every command. You do not need a separate backend installation.
 
-1. Extract `linkup-demo.zip` and open the `linkup-demo` folder in VS Code.
+1. Clone the repository and open its root folder (the folder containing `package.json`):
+
+   ```sh
+   git clone https://github.com/ayushijoshi2004/LinkUp.git
+   cd LinkUp
+   ```
+
+   If using an exported `linkup-demo.zip` instead, extract it and use its `linkup-demo` folder.
 2. Run:
 
    ```bash
